@@ -1,0 +1,50 @@
+# Unique name for this workflow
+name: Validate Pull Request
+
+# Definition when the workflow should run
+on:
+  pull_request:
+    types: [opened, reopened, edited, synchronize]
+    # only applies to PRs that want to merge to qa
+    branches: [dev]
+            
+# Jobs to be executed
+jobs:
+    validate-branch-to-qa-org:
+        runs-on: ubuntu-latest
+        if: ${{ github.actor != 'dependabot[bot]' }}
+        steps:
+            - name: 'Install Salesforce CLI'
+              run: |
+                  wget https://developer.salesforce.com/media/salesforce-cli/sfdx/channels/stable/sfdx-linux-x64.tar.xz
+                  mkdir ~/sfdx
+                  tar xJf sfdx-linux-x64.tar.xz -C ~/sfdx --strip-components 1
+                  echo "$HOME/sfdx/bin" >> $GITHUB_PATH
+                  ~/sfdx/bin/sfdx version
+
+            # https://github.com/scolladon/sfdx-git-delta
+            - name: 'Installing sfdx git delta'
+              run: | 
+                  echo y | sfdx plugins:install sfdx-git-delta
+                  sfdx plugins 
+
+            - name: 'Checkout source code'
+              uses: actions/checkout@v3
+              with:
+                fetch-depth: 0
+
+            - name: 'Populate auth file with SFDX_URL secret of the target SF org'
+              shell: bash
+              run: |
+                  echo ${{ secrets.SFDX_QA_ENV_URL}} > ./SFDX_QA_URL.txt
+
+            - name: 'Create delta packages for new, modified or deleted metadata'
+              run: | 
+                  mkdir changed-sources
+                  sfdx sgd:source:delta --to "HEAD" --from "HEAD^" --output changed-sources/ --generate-delta --source force-app/
+
+            - name: 'Authenticate to target SF Org'
+              run: sfdx auth:sfdxurl:store -f ./SFDX_QA_URL.txt -s -a qa
+
+            - name: 'Validate the delta to target SF org'
+              run: sf project deploy start -x "changed-sources/package/package.xml" -l NoTestRun --dry-run
