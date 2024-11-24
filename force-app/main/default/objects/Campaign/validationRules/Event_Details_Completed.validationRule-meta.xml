@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Event_Details_Completed</fullName>
+    <active>true</active>
+    <description>Ensures the event is fully configured before allowing registrations, including status, date, type, location/URL, and maximum capacity.</description>
+    <errorConditionFormula>ISPICKVAL(Event_Status__c, &quot;Active&quot;) &amp;&amp;
+(
+  ISBLANK(Event_Date__c) || 
+  ISBLANK(URL__c) || 
+  Maximum_Capacity__c &lt;= 0 || 
+  ISPICKVAL(Event_Type__c, &quot;&quot;)  /* Verifica que el Tipo de Evento esté vacío */
+)</errorConditionFormula>
+    <errorMessage>All event details must be completed before student registration will be allowed.</errorMessage>
+</ValidationRule>

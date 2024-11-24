@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Bachelor_s_Degree__c</fullName>
+    <description>Student&apos;s Bachelor&apos;s Degree program</description>
+    <label>Bachelor&apos;s Degree</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>TextArea</type>
+</CustomField>
