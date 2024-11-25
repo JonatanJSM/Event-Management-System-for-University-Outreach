@@ -76,6 +76,11 @@
     </decisions>
     <environments>Default</environments>
     <formulas>
+        <name>StudentFullName</name>
+        <dataType>String</dataType>
+        <expression>$Record.Student__r.FirstName &amp; &quot; &quot; &amp; $Record.Student__r.LastName</expression>
+    </formulas>
+    <formulas>
         <name>TomorrowDate</name>
         <dataType>Date</dataType>
         <expression>DATEVALUE($Flow.CurrentDateTime) + 1</expression>
@@ -116,9 +121,15 @@
             </value>
         </inputAssignments>
         <inputAssignments>
+            <field>Name</field>
+            <value>
+                <elementReference>StudentFullName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>RVSP__c</field>
             <value>
-                <stringValue>Accepted</stringValue>
+                <stringValue>Not decided yet</stringValue>
             </value>
         </inputAssignments>
         <inputAssignments>

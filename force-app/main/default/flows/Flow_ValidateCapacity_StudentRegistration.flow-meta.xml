@@ -15,6 +15,12 @@
             </value>
         </inputParameters>
         <inputParameters>
+            <name>senderAddress</name>
+            <value>
+                <stringValue>salesforceProyecto63@gmail.com</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
             <name>emailSubject</name>
             <value>
                 <stringValue>hola</stringValue>
@@ -37,7 +43,7 @@
         <locationX>182</locationX>
         <locationY>431</locationY>
         <defaultConnector>
-            <targetReference>Create_Waitlist_Record</targetReference>
+            <targetReference>Copy_1_of_Update_registration_form</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -51,12 +57,22 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Create_RSVP_Record</targetReference>
+                <targetReference>Update_registration_form</targetReference>
             </connector>
             <label>Available Capacity &gt; 0</label>
         </rules>
     </decisions>
     <environments>Default</environments>
+    <formulas>
+        <name>RegistrationFormName</name>
+        <dataType>String</dataType>
+        <expression>$Record.Event__r.Name &amp; &quot; - &quot; &amp; $Record.Student__r.FirstName &amp; &quot; &quot; &amp; $Record.Student__r.LastName</expression>
+    </formulas>
+    <formulas>
+        <name>StudentFullName</name>
+        <dataType>String</dataType>
+        <expression>$Record.Student__r.FirstName &amp; &quot; &quot; &amp; $Record.Student__r.LastName</expression>
+    </formulas>
     <interviewLabel>Flow_ValidateCapacity_StudentRegistration {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Flow_ValidateCapacity_StudentRegistration</label>
     <processMetadataValues>
@@ -79,62 +95,6 @@
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <recordCreates>
-        <description>a</description>
-        <name>Create_RSVP_Record</name>
-        <label>Create RSVP Record</label>
-        <locationX>50</locationX>
-        <locationY>539</locationY>
-        <connector>
-            <targetReference>Creating_confirmation_task</targetReference>
-        </connector>
-        <inputAssignments>
-            <field>Event__c</field>
-            <value>
-                <elementReference>Get_Campaign.Id</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Registration_Status__c</field>
-            <value>
-                <stringValue>Accepted</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Student__c</field>
-            <value>
-                <elementReference>$Record.Student__c</elementReference>
-            </value>
-        </inputAssignments>
-        <object>Registration_Form__c</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordCreates>
-    <recordCreates>
-        <name>Create_Waitlist_Record</name>
-        <label>Create Waitlist Record</label>
-        <locationX>314</locationX>
-        <locationY>539</locationY>
-        <inputAssignments>
-            <field>Event__c</field>
-            <value>
-                <elementReference>Get_Campaign.Id</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Registration_Status__c</field>
-            <value>
-                <stringValue>Wailtlist</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Student__c</field>
-            <value>
-                <elementReference>$Record.Student__c</elementReference>
-            </value>
-        </inputAssignments>
-        <object>Registration_Form__c</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordCreates>
-    <recordCreates>
         <name>Creating_confirmation_task</name>
         <label>Creating confirmation task</label>
         <locationX>50</locationX>
@@ -146,6 +106,12 @@
             <field>Due_Date__c</field>
             <value>
                 <elementReference>Get_Campaign.Event_Date__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Name</field>
+            <value>
+                <elementReference>StudentFullName</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -184,6 +150,47 @@
         <object>Campaign</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
+    <recordUpdates>
+        <name>Copy_1_of_Update_registration_form</name>
+        <label>Update registration form Waitlist</label>
+        <locationX>314</locationX>
+        <locationY>539</locationY>
+        <inputAssignments>
+            <field>Name</field>
+            <value>
+                <elementReference>RegistrationFormName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Registration_Status__c</field>
+            <value>
+                <stringValue>Wailtlist</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_registration_form</name>
+        <label>Update registration form</label>
+        <locationX>50</locationX>
+        <locationY>539</locationY>
+        <connector>
+            <targetReference>Creating_confirmation_task</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Name</field>
+            <value>
+                <elementReference>RegistrationFormName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Registration_Status__c</field>
+            <value>
+                <stringValue>Accepted</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
     <start>
         <locationX>56</locationX>
         <locationY>0</locationY>
@@ -195,5 +202,5 @@
         <recordTriggerType>Create</recordTriggerType>
         <triggerType>RecordAfterSave</triggerType>
     </start>
-    <status>Obsolete</status>
+    <status>Draft</status>
 </Flow>
