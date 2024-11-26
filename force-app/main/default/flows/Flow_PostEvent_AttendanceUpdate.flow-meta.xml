@@ -11,25 +11,31 @@
         <inputParameters>
             <name>emailAddresses</name>
             <value>
-                <elementReference>email_test</elementReference>
+                <elementReference>Get_Confirmations.Email</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
-            <name>senderAddress</name>
+            <name>senderType</name>
             <value>
-                <elementReference>email_test</elementReference>
+                <stringValue>CurrentUser</stringValue>
             </value>
         </inputParameters>
         <inputParameters>
             <name>emailSubject</name>
             <value>
-                <elementReference>subject_text</elementReference>
+                <elementReference>EmailSubject</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
             <name>emailBody</name>
             <value>
-                <elementReference>body_email</elementReference>
+                <elementReference>EmailBody</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>useLineBreaks</name>
+            <value>
+                <booleanValue>true</booleanValue>
             </value>
         </inputParameters>
         <nameSegment>emailSimple</nameSegment>
@@ -44,6 +50,7 @@
             <stringValue>test@test.com</stringValue>
         </value>
     </constants>
+    <description>Update v15</description>
     <environments>Default</environments>
     <interviewLabel>Flow_PostEvent_AttendanceUpdate {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Flow_PostEvent_AttendanceUpdate</label>
@@ -77,18 +84,17 @@
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
-            <field>Event__c</field>
+            <field>CampaignId</field>
             <operator>EqualTo</operator>
             <value>
                 <elementReference>$Record.Id</elementReference>
             </value>
         </filters>
-        <getFirstRecordOnly>false</getFirstRecordOnly>
-        <object>Registration_Form__c</object>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>CampaignMember</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordUpdates>
-        <description>Actualiza el estado de asistencia en los formularios de inscripción relacionados con el evento.</description>
         <name>Update_Attendance_Status</name>
         <label>Update Attendance Status</label>
         <locationX>176</locationX>
@@ -96,7 +102,21 @@
         <connector>
             <targetReference>Send_Feedback_Email</targetReference>
         </connector>
-        <inputReference>Get_Confirmations</inputReference>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>CampaignId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>Asistió</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record.CampaignMembers</inputReference>
     </recordUpdates>
     <start>
         <locationX>50</locationX>
@@ -104,7 +124,6 @@
         <connector>
             <targetReference>Get_Confirmations</targetReference>
         </connector>
-        <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Status</field>
@@ -117,15 +136,26 @@
         <recordTriggerType>Update</recordTriggerType>
         <triggerType>RecordAfterSave</triggerType>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
     <textTemplates>
         <name>body_email</name>
         <isViewedAsPlainText>false</isViewedAsPlainText>
         <text>&lt;p&gt;Thank you for attending our event! We hope to see you at future events.&lt;/p&gt;</text>
     </textTemplates>
     <textTemplates>
+        <name>EmailBody</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>Hola {!Get_Confirmations.Name} , 
+Nos alegra mucho que hayas podido asistir al evento {!$Record.Name} organizado por la Facultad de Matemáticas de la UADY el día {!$Record.StartDate}. Tu participación es clave para que estos eventos sigan creciendo y ayudando a más estudiantes como tú.</text>
+    </textTemplates>
+    <textTemplates>
+        <name>EmailSubject</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>Gracias por asistir al {!$Record.Name}!</text>
+    </textTemplates>
+    <textTemplates>
         <name>subject_text</name>
-        <isViewedAsPlainText>false</isViewedAsPlainText>
-        <text>&lt;p&gt;Thank you for attending the [Event Name] event&lt;/p&gt;</text>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>Thank you for attending the [Event Name] event</text>
     </textTemplates>
 </Flow>
