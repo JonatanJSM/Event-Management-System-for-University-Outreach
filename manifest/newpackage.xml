@@ -49,6 +49,11 @@
         <name>ValidationRule</name>
     </types>
     <types>
+        <members>Confirmation_Task__c</members>
+        <members>Registration_Form__c</members>
+        <name>CustomTab</name>
+    </types>
+    <types>
         <members>Admissions Officer</members>
         <members>Event Coordinator</members>
         <name>Profile</name>
