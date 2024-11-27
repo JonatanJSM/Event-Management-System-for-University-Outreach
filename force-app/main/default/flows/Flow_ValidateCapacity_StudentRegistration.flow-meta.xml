@@ -1,6 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionCalls>
+        <name>Email_to_announce_waitlist</name>
+        <label>Email to announce waitlist</label>
+        <locationX>314</locationX>
+        <locationY>647</locationY>
+        <actionName>emailSimple</actionName>
+        <actionType>emailSimple</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>emailAddresses</name>
+            <value>
+                <elementReference>$Record.Student__r.Email</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>senderAddress</name>
+            <value>
+                <elementReference>$User.Email</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailSubject</name>
+            <value>
+                <elementReference>WaitlistSubject</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailBody</name>
+            <value>
+                <elementReference>WaitlistBody</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>emailSimple</nameSegment>
+        <offset>0</offset>
+        <versionSegment>1</versionSegment>
+    </actionCalls>
+    <actionCalls>
         <name>Email_to_confirm_interest</name>
         <label>Email to confirm interest</label>
         <locationX>50</locationX>
@@ -17,19 +53,19 @@
         <inputParameters>
             <name>senderAddress</name>
             <value>
-                <stringValue>salesforceProyecto63@gmail.com</stringValue>
+                <elementReference>$User.Email</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
             <name>emailSubject</name>
             <value>
-                <stringValue>hola</stringValue>
+                <elementReference>SubjectConfirmation</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
             <name>emailBody</name>
             <value>
-                <stringValue>hola</stringValue>
+                <elementReference>ConfirmationBody</elementReference>
             </value>
         </inputParameters>
         <nameSegment>emailSimple</nameSegment>
@@ -152,9 +188,12 @@
     </recordLookups>
     <recordUpdates>
         <name>Copy_1_of_Update_registration_form</name>
-        <label>Update registration form Waitlist</label>
+        <label>Copy 1 of Update registration form</label>
         <locationX>314</locationX>
         <locationY>539</locationY>
+        <connector>
+            <targetReference>Email_to_announce_waitlist</targetReference>
+        </connector>
         <inputAssignments>
             <field>Name</field>
             <value>
@@ -197,10 +236,38 @@
         <connector>
             <targetReference>Get_Campaign</targetReference>
         </connector>
-        <filterFormula>ISNEW()</filterFormula>
+        <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Registration_Status__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Accepted</stringValue>
+            </value>
+        </filters>
         <object>Registration_Form__c</object>
-        <recordTriggerType>Create</recordTriggerType>
+        <recordTriggerType>Update</recordTriggerType>
         <triggerType>RecordAfterSave</triggerType>
     </start>
     <status>Draft</status>
+    <textTemplates>
+        <name>ConfirmationBody</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>&lt;p&gt;¡Muchas gracias por mostrar interés {!$Record.Student__r.FirstName}!&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Este mensaje es para confirmarte que alcanzaste cupo, sin embargo, el día del evento {!$Record.Event__r.Name} que es el {!$Record.Event__r.Event_Date__c} se te enviará un correo a las 8 am y otro a las 10 am para confirmar tu asistencia final.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Por favor debes confirmar tu asisntencia, en caso de no hacer antes de las 12 pm, se toma como cancelado tu registro.  &lt;/p&gt;</text>
+    </textTemplates>
+    <textTemplates>
+        <name>SubjectConfirmation</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>&lt;p&gt;¡Alcanzaste cupo para {!$Record.Event__r.Name}!&lt;/p&gt;</text>
+    </textTemplates>
+    <textTemplates>
+        <name>WaitlistBody</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>&lt;p&gt;Nos apena informarte que no alcanzaste cupo. Sin embargo, te mandamos a la lista de espera.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;{!$Record.Event__r.Name} será el {!$Record.Event__r.Event_Date__c}. Pero a las 12 pm del mismo día &lt;strong&gt;es posible&lt;/strong&gt; que se te mande un correo en caso de alguna persona cancele su asisntencia y sería posible puedas unirte al evento.&lt;/p&gt;</text>
+    </textTemplates>
+    <textTemplates>
+        <name>WaitlistSubject</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>&lt;p&gt;Se te mandó a la lista de espera del evento {!$Record.Event__r.Name}&lt;/p&gt;</text>
+    </textTemplates>
 </Flow>
