@@ -24,6 +24,11 @@
                 <default>false</default>
                 <label>Accepted</label>
             </value>
+            <value>
+                <fullName>Wailtlist</fullName>
+                <default>false</default>
+                <label>Wailtlist</label>
+            </value>
         </valueSetDefinition>
     </valueSet>
 </CustomField>
