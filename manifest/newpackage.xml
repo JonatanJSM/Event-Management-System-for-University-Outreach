@@ -59,6 +59,30 @@
         <name>Profile</name>
     </types>
     <types>
+        <members>Account-Institutions_or_Organizations_Layout_AO</members>
+        <members>Account-Institutions_or_Organizations_Layout_EC</members>
+        <name>Layout</name>
+    </types>
+    <types>
+        <members>Flow_PostEvent_AttendanceUpdate</members>
+        <members>Flow_ValidateCapacity_StudentRegistration</members>
+        <members>Flow_Waitlist_Management</members>
+        <members>Send_Campaign_Activation_Emails</members>
+        <name>Flow</name>
+    </types>
+    <types>
+        <members>EventController</members>
+        <members>RegistrationFormController</members>
+        <members>TestEventController</members>
+        <members>TestRegistrationFormController</members>
+        <name>ApexClass</name>
+    </types>
+    <types>
+        <members>eventList</members>
+        <members>registerEventForm</members>
+        <name>LightningComponentBundle</name>
+    </types>
+    <types>
 		<members>enablement/sfdcEnablement_EnablementWorkspace.sfdc_cms__languageSettings/languages</members>
 		<members>site/EventFormRegistration1.sfdc_cms__appPage/mainAppPage</members>
 		<members>site/EventFormRegistration1.sfdc_cms__brandingSet/Build_Your_Own_LWR</members>
