@@ -3,15 +3,18 @@
     <actionCalls>
         <name>Send_Feedback_Email</name>
         <label>Send Feedback Email</label>
-        <locationX>176</locationX>
+        <locationX>264</locationX>
         <locationY>539</locationY>
         <actionName>emailSimple</actionName>
         <actionType>emailSimple</actionType>
+        <connector>
+            <targetReference>Send_individual_email</targetReference>
+        </connector>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>emailAddresses</name>
             <value>
-                <elementReference>Get_Confirmations.Email</elementReference>
+                <elementReference>Send_individual_email.Email</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -50,10 +53,24 @@
             <stringValue>test@test.com</stringValue>
         </value>
     </constants>
-    <description>Update v15</description>
+    <description>Update v22</description>
     <environments>Default</environments>
     <interviewLabel>Flow_PostEvent_AttendanceUpdate {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Flow_PostEvent_AttendanceUpdate</label>
+    <loops>
+        <name>Send_individual_email</name>
+        <label>Send individual email</label>
+        <locationX>176</locationX>
+        <locationY>431</locationY>
+        <collectionReference>Get_Confirmations</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Send_Feedback_Email</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Update_Attendance_Status</targetReference>
+        </noMoreValuesConnector>
+    </loops>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -80,7 +97,7 @@
         <locationY>323</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Update_Attendance_Status</targetReference>
+            <targetReference>Send_individual_email</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -90,7 +107,7 @@
                 <elementReference>$Record.Id</elementReference>
             </value>
         </filters>
-        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
         <object>CampaignMember</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
@@ -98,10 +115,7 @@
         <name>Update_Attendance_Status</name>
         <label>Update Attendance Status</label>
         <locationX>176</locationX>
-        <locationY>431</locationY>
-        <connector>
-            <targetReference>Send_Feedback_Email</targetReference>
-        </connector>
+        <locationY>731</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>CampaignId</field>
@@ -113,7 +127,7 @@
         <inputAssignments>
             <field>Status</field>
             <value>
-                <stringValue>Asistió</stringValue>
+                <stringValue>Responded</stringValue>
             </value>
         </inputAssignments>
         <inputReference>$Record.CampaignMembers</inputReference>
@@ -145,7 +159,7 @@
     <textTemplates>
         <name>EmailBody</name>
         <isViewedAsPlainText>true</isViewedAsPlainText>
-        <text>Hola {!Get_Confirmations.Name} , 
+        <text>Hola {!Send_individual_email.Name} , 
 Nos alegra mucho que hayas podido asistir al evento {!$Record.Name} organizado por la Facultad de Matemáticas de la UADY el día {!$Record.StartDate}. Tu participación es clave para que estos eventos sigan creciendo y ayudando a más estudiantes como tú.</text>
     </textTemplates>
     <textTemplates>
