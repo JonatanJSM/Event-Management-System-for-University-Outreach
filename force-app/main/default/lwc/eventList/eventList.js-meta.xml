@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>62.0</apiVersion>
+    <isExposed>true</isExposed>
+    <targets>
+        <target>lightning__RecordPage</target>
+        <target>lightning__AppPage</target>
+        <target>lightning__HomePage</target>
+        <target>lightningCommunity__Page</target>
+        <target>lightningCommunity__Default</target>
+    </targets>
+</LightningComponentBundle>
+
+
+<!-- 
+Decorador	Propósito	Uso Típico
+@wire	Vincular datos de Salesforce con tu componente	Recuperar datos usando Apex o APIs de Salesforce.
+@api	Hacer una propiedad/método accesible desde otro componente	Comunicación entre componentes padre e hijo.
+@track	Hacer reactivo un objeto o arreglo	Manejo de datos dinámicos en la UI. 
+
+
+
+
+
+Bajar todos los datos
+sfdx force:source:pull -u YourOrgAlias
+
+
+sfdx sgd:source:delta -2 to HEAD -2 from HEAD~1 -2generate-delta -2output ./changed-sources
+
+
+
+
+
+
+
+
+
+-->
+
+
