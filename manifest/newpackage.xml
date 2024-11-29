@@ -61,6 +61,10 @@
     <types>
         <members>Account-Institutions_or_Organizations_Layout_AO</members>
         <members>Account-Institutions_or_Organizations_Layout_EC</members>
+        <members>Confirmation_Task__c-Confirmation Task - Admission Officer</members>
+        <members>Confirmation_Task__c-Confirmation Task - Event Coordinator</members>
+        <members>Registration_Form__c-Registration Form - Admissions Officer</members>
+        <members>Registration_Form__c-Registration Form - Event Coordinator</members>
         <name>Layout</name>
     </types>
     <types>
