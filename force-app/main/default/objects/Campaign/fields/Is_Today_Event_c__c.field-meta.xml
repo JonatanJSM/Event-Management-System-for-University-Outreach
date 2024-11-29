@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Is_Today_Event_c__c</fullName>
+    <description>A</description>
+    <formula>TODAY() = DATEVALUE(Event_Date__c)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Is Today Event?</label>
+    <type>Checkbox</type>
+</CustomField>

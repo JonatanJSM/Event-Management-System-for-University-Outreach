@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <description>Envía correos a los estudiantes cuando la campaña se activa</description>
+        <name>Copy_2_of_Send_Event_Activation_Email</name>
+        <label>Send email to contacts</label>
+        <locationX>264</locationX>
+        <locationY>947</locationY>
+        <actionName>emailSimple</actionName>
+        <actionType>emailSimple</actionType>
+        <connector>
+            <targetReference>CurrentRegistrationsForms</targetReference>
+        </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>emailAddresses</name>
+            <value>
+                <elementReference>CurrentRegistrationsForms.Student__r.Email</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>senderAddress</name>
+            <value>
+                <elementReference>$User.Email</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailSubject</name>
+            <value>
+                <elementReference>SubjectEmail</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailBody</name>
+            <value>
+                <elementReference>Email_Body</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>emailSimple</nameSegment>
+        <offset>0</offset>
+        <versionSegment>1</versionSegment>
+    </actionCalls>
+    <apiVersion>62.0</apiVersion>
+    <description>Este flujo envía correos electrónicos a todos los contactos cuando una campaña cambia su estado a &quot;In Progress&quot;. Incluye detalles de la campaña como el nombre, tipo, fecha y la descripción.</description>
+    <environments>Default</environments>
+    <formulas>
+        <name>FormName</name>
+        <dataType>String</dataType>
+        <expression>LEFT({!Loop_Through_All_Contacts.LastName}, 20) &amp; &quot; - &quot; &amp; LEFT({!$Record.Name}, 30) &amp; &quot; Registration&quot;</expression>
+    </formulas>
+    <formulas>
+        <name>Link</name>
+        <dataType>String</dataType>
+        <expression>LEFT({!$Api.Partner_Server_URL_340},FIND(&quot;/services&quot;, {!$Api.Partner_Server_URL_340})) &amp; {!CurrentRegistrationsForms.Id}</expression>
+    </formulas>
+    <interviewLabel>Send Campaign Activation Emails {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Send Campaign Activation Emails</label>
+    <loops>
+        <name>CurrentRegistrationsForms</name>
+        <label>CurrentRegistrationsForms</label>
+        <locationX>176</locationX>
+        <locationY>839</locationY>
+        <collectionReference>Get_Registration_Forms_From_Event</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Copy_2_of_Send_Event_Activation_Email</targetReference>
+        </nextValueConnector>
+    </loops>
+    <loops>
+        <description>Mandar invitación a todos sobre una nueva campaña</description>
+        <name>Loop_Through_All_Contacts</name>
+        <label>Loop Through All Contacts</label>
+        <locationX>176</locationX>
+        <locationY>431</locationY>
+        <collectionReference>Get_All_Contacts_for_Campaign_Invitation</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Create_Temptative_Registrations</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Get_Registration_Forms_From_Event</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordCreates>
+        <name>Create_Temptative_Registrations</name>
+        <label>Create Temptative Registrations</label>
+        <locationX>264</locationX>
+        <locationY>539</locationY>
+        <connector>
+            <targetReference>Loop_Through_All_Contacts</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Event__c</field>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Name</field>
+            <value>
+                <elementReference>FormName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Registration_Status__c</field>
+            <value>
+                <stringValue>Not resolved yet</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Student__c</field>
+            <value>
+                <elementReference>Loop_Through_All_Contacts.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Registration_Form__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordLookups>
+        <description>Obtiene todos los registros de Contact para enviar mensaje de un nuevo evento.</description>
+        <name>Get_All_Contacts_for_Campaign_Invitation</name>
+        <label>Get All Contacts for Campaign Invitation</label>
+        <locationX>176</locationX>
+        <locationY>323</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Loop_Through_All_Contacts</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Email</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>Contact</object>
+        <sortField>CreatedDate</sortField>
+        <sortOrder>Asc</sortOrder>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_Registration_Forms_From_Event</name>
+        <label>Get Registration Forms From Event</label>
+        <locationX>176</locationX>
+        <locationY>731</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>CurrentRegistrationsForms</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Event__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>Registration_Form__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Get_All_Contacts_for_Campaign_Invitation</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Status</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>In Progress</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>IsChanged</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>IsActive</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <object>Campaign</object>
+        <recordTriggerType>Update</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+    <textTemplates>
+        <name>Body_Email</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>Hola {!Loop_Through_All_Contacts.FirstName}
+Te informamos que va a ocurrir un evento llamado {!$Record.Name} y se realizará el {!$Record.Event_Date__c}
+Si te interesa puedes llenar formulario de registro en Salesforce.  {!Link}</text>
+    </textTemplates>
+    <textTemplates>
+        <name>Email_Body</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>Hola {!CurrentRegistrationsForms.Student__r.FirstName}
+Te informamos que va a ocurrir un evento llamado {!$Record.Name} del tipo {!CurrentRegistrationsForms.Event__r.Type} y se realizará el {!$Record.Event_Date__c} 
+Si te interesa puedes llenar formulario de registro aquí: {!Link}</text>
+    </textTemplates>
+    <textTemplates>
+        <name>SubjectEmail</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>Invitación para el evento {!$Record.Name}</text>
+    </textTemplates>
+</Flow>
