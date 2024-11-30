@@ -139,12 +139,6 @@
             <targetReference>Email_to_confirm_interest</targetReference>
         </connector>
         <inputAssignments>
-            <field>Due_Date__c</field>
-            <value>
-                <elementReference>Get_Campaign.Event_Date__c</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
             <field>Name</field>
             <value>
                 <elementReference>StudentFullName</elementReference>
@@ -246,28 +240,33 @@
             </value>
         </filters>
         <object>Registration_Form__c</object>
-        <recordTriggerType>Update</recordTriggerType>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
         <triggerType>RecordAfterSave</triggerType>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
     <textTemplates>
         <name>ConfirmationBody</name>
-        <isViewedAsPlainText>false</isViewedAsPlainText>
-        <text>&lt;p&gt;¡Muchas gracias por mostrar interés {!$Record.Student__r.FirstName}!&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Este mensaje es para confirmarte que alcanzaste cupo, sin embargo, el día del evento {!$Record.Event__r.Name} que es el {!$Record.Event__r.Event_Date__c} se te enviará un correo a las 8 am y otro a las 10 am para confirmar tu asistencia final.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Por favor debes confirmar tu asisntencia, en caso de no hacer antes de las 12 pm, se toma como cancelado tu registro.  &lt;/p&gt;</text>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>¡Muchas gracias por mostrar interés {!$Record.Student__r.FirstName}!
+
+Este mensaje es para confirmarte que alcanzaste cupo, sin embargo, el día del evento {!$Record.Event__r.Name} que es el {!$Record.Event__r.Event_Date__c} se te enviará un correo a las 8 am y otro a las 10 am para confirmar tu asistencia final.
+Por favor debes confirmar tu asisntencia, en caso de no hacer antes de las 12 pm, se toma como cancelado tu registro.</text>
     </textTemplates>
     <textTemplates>
         <name>SubjectConfirmation</name>
-        <isViewedAsPlainText>false</isViewedAsPlainText>
-        <text>&lt;p&gt;¡Alcanzaste cupo para {!$Record.Event__r.Name}!&lt;/p&gt;</text>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>¡Alcanzaste cupo para {!$Record.Event__r.Name}!</text>
     </textTemplates>
     <textTemplates>
         <name>WaitlistBody</name>
-        <isViewedAsPlainText>false</isViewedAsPlainText>
-        <text>&lt;p&gt;Nos apena informarte que no alcanzaste cupo. Sin embargo, te mandamos a la lista de espera.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;{!$Record.Event__r.Name} será el {!$Record.Event__r.Event_Date__c}. Pero a las 12 pm del mismo día &lt;strong&gt;es posible&lt;/strong&gt; que se te mande un correo en caso de alguna persona cancele su asisntencia y sería posible puedas unirte al evento.&lt;/p&gt;</text>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>Nos apena informarte que no alcanzaste cupo. Sin embargo, te mandamos a la lista de espera.
+
+{!$Record.Event__r.Name} será el {!$Record.Event__r.Event_Date__c}. Pero a las 12 pm del mismo día es posible que se te mande un correo en caso de alguna persona cancele su asisntencia y sería posible puedas unirte al evento.</text>
     </textTemplates>
     <textTemplates>
         <name>WaitlistSubject</name>
-        <isViewedAsPlainText>false</isViewedAsPlainText>
-        <text>&lt;p&gt;Se te mandó a la lista de espera del evento {!$Record.Event__r.Name}&lt;/p&gt;</text>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>Se te mandó a la lista de espera del evento {!$Record.Event__r.Name}</text>
     </textTemplates>
 </Flow>
