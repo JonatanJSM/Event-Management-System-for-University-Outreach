@@ -41,6 +41,7 @@
         <members>Campaign.Event_Type__c</members>
         <members>Campaign.Maximum_Capacity__c</members>
         <members>Campaign.URL__c</members>
+        <members>Campaign.Is_Today_Event_c__c</members>
         <name>CustomField</name>
     </types>
     <types>
@@ -65,6 +66,7 @@
     </types>
     <types>
         <members>Flow_PostEvent_AttendanceUpdate</members>
+        <members>Flow_PreEvent_Reminders</members>
         <members>Flow_ValidateCapacity_StudentRegistration</members>
         <members>Flow_Waitlist_Management</members>
         <members>Send_Campaign_Activation_Emails</members>
