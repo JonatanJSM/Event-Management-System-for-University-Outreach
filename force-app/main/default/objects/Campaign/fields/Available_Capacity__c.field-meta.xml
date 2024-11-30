@@ -4,11 +4,10 @@
     <description>Calculate the available capacity of an event by subtracting the number of confirmed attendees from the maximum capacity of the event. This field is automatically updated whenever the number of confirmed attendees in the associated campaign changes, providing a clear view of how many spots are available for new participants.</description>
     <externalId>false</externalId>
     <formula>Maximum_Capacity__c - Confirmed_Attendees__c</formula>
-    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
     <label>Available Capacity</label>
     <precision>18</precision>
     <required>false</required>
-    <scale>2</scale>
+    <scale>0</scale>
     <type>Number</type>
     <unique>false</unique>
 </CustomField>
