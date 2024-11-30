@@ -3,7 +3,7 @@
     <actionCalls>
         <description>Envía correos a los estudiantes cuando la campaña se activa</description>
         <name>Copy_2_of_Send_Event_Activation_Email</name>
-        <label>Copy 2 of Send Event Activation Email</label>
+        <label>Send email to contacts</label>
         <locationX>264</locationX>
         <locationY>947</locationY>
         <actionName>emailSimple</actionName>
@@ -212,20 +212,24 @@
         <recordTriggerType>Update</recordTriggerType>
         <triggerType>RecordAfterSave</triggerType>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
     <textTemplates>
         <name>Body_Email</name>
-        <isViewedAsPlainText>false</isViewedAsPlainText>
-        <text>&lt;p&gt;Hola {!Loop_Through_All_Contacts.FirstName}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Te informamos que va a ocurrir un evento llamado {!$Record.Name} y se realizará el {!$Record.Event_Date__c}&lt;/p&gt;&lt;p&gt;Si te interesa puedes llenar formulario de registro en Salesforce.&lt;/p&gt;</text>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>Hola {!Loop_Through_All_Contacts.FirstName}
+Te informamos que va a ocurrir un evento llamado {!$Record.Name} y se realizará el {!$Record.Event_Date__c}
+Si te interesa puedes llenar formulario de registro en Salesforce.  {!Link}</text>
     </textTemplates>
     <textTemplates>
         <name>Email_Body</name>
-        <isViewedAsPlainText>false</isViewedAsPlainText>
-        <text>&lt;p&gt;Hola {!CurrentRegistrationsForms.Student__r.FirstName}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Te informamos que va a ocurrir un evento llamado {!$Record.Name} y se realizará el {!$Record.Event_Date__c}&lt;/p&gt;&lt;p&gt;Si te interesa puedes llenar formulario de registro aquí: {!Link}&lt;/p&gt;</text>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>Hola {!CurrentRegistrationsForms.Student__r.FirstName}
+Te informamos que va a ocurrir un evento llamado {!$Record.Name} del tipo {!CurrentRegistrationsForms.Event__r.Type} y se realizará el {!$Record.Event_Date__c} 
+Si te interesa puedes llenar formulario de registro aquí: {!Link}</text>
     </textTemplates>
     <textTemplates>
         <name>SubjectEmail</name>
-        <isViewedAsPlainText>false</isViewedAsPlainText>
-        <text>&lt;p&gt;Invitación para el evento {!$Record.Name}&lt;/p&gt;</text>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>Invitación para el evento {!$Record.Name}</text>
     </textTemplates>
 </Flow>
