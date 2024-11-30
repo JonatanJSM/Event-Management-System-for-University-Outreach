@@ -45,6 +45,17 @@
         <name>CustomField</name>
     </types>
     <types>
+        <members>Event_Feedback__c.Attendee__c</members>
+        <members>Event_Feedback__c.Comments__c</members>
+        <members>Event_Feedback__c.Event_Name__c</members>
+        <members>Event_Feedback__c.Rating__c</members>
+        <name>CustomField</name>
+    </types>
+    <types>
+        <members>Event_Feedback__c</members>
+        <name>CustomObject</name>
+    </types>
+    <types>
         <members>Campaign.Capacity_Reached</members>
         <members>Campaign.Event_Details_Completed</members>
         <name>ValidationRule</name>
@@ -52,11 +63,13 @@
     <types>
         <members>Confirmation_Task__c</members>
         <members>Registration_Form__c</members>
+        <members>Event_Feedback__c</members>
         <name>CustomTab</name>
     </types>
     <types>
         <members>Admissions Officer</members>
         <members>Event Coordinator</members>
+        <members>Admin</members>
         <name>Profile</name>
     </types>
     <types>
