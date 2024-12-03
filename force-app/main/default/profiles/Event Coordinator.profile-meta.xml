@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Profile xmlns="http://soap.sforce.com/2006/04/metadata">
     <custom>true</custom>
-     <layoutAssignments>
-        <layout>Campaign-Campaign Layout</layout>
+      <layoutAssignments>
+        <layout>Campaign-Campaign_Layout_EC</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Contact-Contact Layout EC</layout>
