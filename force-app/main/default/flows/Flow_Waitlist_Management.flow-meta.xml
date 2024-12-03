@@ -3,10 +3,13 @@
     <actionCalls>
         <name>Send_Email_Action_1</name>
         <label>Send Email Action 1</label>
-        <locationX>50</locationX>
-        <locationY>792</locationY>
+        <locationX>182</locationX>
+        <locationY>684</locationY>
         <actionName>emailSimple</actionName>
         <actionType>emailSimple</actionType>
+        <connector>
+            <targetReference>Wait_for_two_hours</targetReference>
+        </connector>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>emailAddresses</name>
@@ -15,9 +18,15 @@
             </value>
         </inputParameters>
         <inputParameters>
+            <name>senderType</name>
+            <value>
+                <stringValue>OrgWideEmailAddress</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
             <name>senderAddress</name>
             <value>
-                <elementReference>$User.Email</elementReference>
+                <stringValue>salesforceproyecto63@gmail.com</stringValue>
             </value>
         </inputParameters>
         <inputParameters>
@@ -36,11 +45,75 @@
         <offset>0</offset>
         <versionSegment>1</versionSegment>
     </actionCalls>
+    <actionCalls>
+        <name>Send_Email_Action_2</name>
+        <label>Send Email Action 2</label>
+        <locationX>50</locationX>
+        <locationY>1224</locationY>
+        <actionName>emailSimple</actionName>
+        <actionType>emailSimple</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>emailAddresses</name>
+            <value>
+                <elementReference>Get_record_again_from_Confirmation_Task.Registration_Form__r.Student__r.Email</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>senderType</name>
+            <value>
+                <stringValue>OrgWideEmailAddress</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>senderAddress</name>
+            <value>
+                <stringValue>salesforceproyecto63@gmail.com</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailSubject</name>
+            <value>
+                <elementReference>Subject</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailBody</name>
+            <value>
+                <elementReference>BodyEmail2</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>emailSimple</nameSegment>
+        <offset>0</offset>
+        <versionSegment>1</versionSegment>
+    </actionCalls>
     <apiVersion>62.0</apiVersion>
+    <decisions>
+        <name>Did_they_confirm_the_email</name>
+        <label>Did they confirm the email?</label>
+        <locationX>182</locationX>
+        <locationY>1008</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>They_did</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_record_again_from_Confirmation_Task.RVSP__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Accepted</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Create_Records_2</targetReference>
+            </connector>
+            <label>They did</label>
+        </rules>
+    </decisions>
     <decisions>
         <name>There_is_people_on_the_waitlist</name>
         <label>There is people on the waitlist?</label>
-        <locationX>182</locationX>
+        <locationX>336</locationX>
         <locationY>360</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -75,7 +148,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Update_RSVP_Record</targetReference>
+                <targetReference>Creating_Confirmation_Task</targetReference>
             </connector>
             <label>People on the waitlist</label>
         </rules>
@@ -123,19 +196,42 @@
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <recordCreates>
+        <name>Create_Records_2</name>
+        <label>Create Campaign Member</label>
+        <locationX>50</locationX>
+        <locationY>1116</locationY>
+        <connector>
+            <targetReference>Send_Email_Action_2</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>CampaignId</field>
+            <value>
+                <elementReference>$Record.Event__r.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ContactId</field>
+            <value>
+                <elementReference>$Record.Student__r.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>Responded</stringValue>
+            </value>
+        </inputAssignments>
+        <object>CampaignMember</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
         <name>Creating_Confirmation_Task</name>
         <label>Creating Confirmation Task</label>
-        <locationX>50</locationX>
-        <locationY>576</locationY>
+        <locationX>182</locationX>
+        <locationY>468</locationY>
         <connector>
             <targetReference>Get_Record_From_Confirmation_Task</targetReference>
         </connector>
-        <inputAssignments>
-            <field>Due_Date__c</field>
-            <value>
-                <elementReference>Get_records_from_campaign.Event_Date__c</elementReference>
-            </value>
-        </inputAssignments>
         <inputAssignments>
             <field>Name</field>
             <value>
@@ -158,10 +254,31 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <recordLookups>
+        <name>Get_record_again_from_Confirmation_Task</name>
+        <label>Get record again from Confirmation Task</label>
+        <locationX>182</locationX>
+        <locationY>900</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Did_they_confirm_the_email</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Registration_Form__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Confirmation_Task__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
         <name>Get_Record_From_Confirmation_Task</name>
         <label>Get Record From Confirmation Task</label>
-        <locationX>50</locationX>
-        <locationY>684</locationY>
+        <locationX>182</locationX>
+        <locationY>576</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Send_Email_Action_1</targetReference>
@@ -181,7 +298,7 @@
     <recordLookups>
         <name>Get_records_from_campaign</name>
         <label>Get records from campaign</label>
-        <locationX>182</locationX>
+        <locationX>336</locationX>
         <locationY>252</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -199,24 +316,8 @@
         <object>Campaign</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
-    <recordUpdates>
-        <name>Update_RSVP_Record</name>
-        <label>Update Registration FormRecord</label>
-        <locationX>50</locationX>
-        <locationY>468</locationY>
-        <connector>
-            <targetReference>Creating_Confirmation_Task</targetReference>
-        </connector>
-        <inputAssignments>
-            <field>Registration_Status__c</field>
-            <value>
-                <stringValue>Accepted</stringValue>
-            </value>
-        </inputAssignments>
-        <inputReference>$Record</inputReference>
-    </recordUpdates>
     <start>
-        <locationX>56</locationX>
+        <locationX>210</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Get_records_from_campaign</targetReference>
@@ -232,16 +333,23 @@
         <object>Registration_Form__c</object>
         <schedule>
             <frequency>Once</frequency>
-            <startDate>2024-11-26</startDate>
+            <startDate>2024-11-28</startDate>
             <startTime>12:00:00.000Z</startTime>
         </schedule>
         <triggerType>Scheduled</triggerType>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
     <textTemplates>
         <name>Bodyemail</name>
-        <isViewedAsPlainText>false</isViewedAsPlainText>
-        <text>&lt;p&gt;¡Hay cupo disponible para el evento de {!$Record.Event__r.Name} !. Apresúrate y confirma tu asistencia en la plataforma, puedes no ser el único interesado. {!Link}&lt;/p&gt;</text>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>¡Hay cupo disponible para el evento de {!$Record.Event__r.Name} !. Apresúrate y confirma tu asistencia en la plataforma, puedes no ser el único interesado. {!Link}</text>
+    </textTemplates>
+    <textTemplates>
+        <name>BodyEmail2</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>¡Bienvenido a {!$Record.Event__r.Name}!
+
+Muchas Gracias por mostrar interés, {!$Record.Student__r.FirstName}. Nos vemos ahí.</text>
     </textTemplates>
     <textTemplates>
         <name>NameConfirmationTask</name>
@@ -249,8 +357,30 @@
         <text>&lt;p&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;LEFT({!$Record.Event__r.Name}, 30) &amp;amp; &quot; - &quot; &amp;amp; LEFT({!$Record.Student__r.LastName}, 20) &amp;amp; &quot; Status&quot;&lt;/span&gt;&lt;/p&gt;</text>
     </textTemplates>
     <textTemplates>
-        <name>SubjectEmail</name>
-        <isViewedAsPlainText>false</isViewedAsPlainText>
-        <text>&lt;p&gt;Cupo disponible para {!$Record.Event__r.Name}&lt;/p&gt;</text>
+        <name>Subject</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>Nos vemos en {!$Record.Event__r.Name}</text>
     </textTemplates>
+    <textTemplates>
+        <name>SubjectEmail</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>Cupo disponible para {!$Record.Event__r.Name}</text>
+    </textTemplates>
+    <waits>
+        <name>Wait_for_two_hours</name>
+        <elementSubtype>WaitDuration</elementSubtype>
+        <label>Wait for two hours</label>
+        <locationX>182</locationX>
+        <locationY>792</locationY>
+        <defaultConnectorLabel>Default Path</defaultConnectorLabel>
+        <waitEvents>
+            <conditionLogic>and</conditionLogic>
+            <connector>
+                <targetReference>Get_record_again_from_Confirmation_Task</targetReference>
+            </connector>
+            <label>el_0</label>
+            <offset>2</offset>
+            <offsetUnit>Hours</offsetUnit>
+        </waitEvents>
+    </waits>
 </Flow>
