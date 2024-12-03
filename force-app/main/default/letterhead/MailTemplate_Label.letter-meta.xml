@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Letterhead xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <backgroundColor>#CCCCCC</backgroundColor>
+    <bodyColor>#FFFFFF</bodyColor>
+    <bottomLine>
+        <color>#AAAAFF</color>
+        <height>0</height>
+    </bottomLine>
+    <description>Label for mailing templates</description>
+    <footer>
+        <backgroundColor>#3333FF</backgroundColor>
+        <height>0</height>
+        <horizontalAlignment>Left</horizontalAlignment>
+        <verticalAlignment>Top</verticalAlignment>
+    </footer>
+    <header>
+        <backgroundColor>#FF9900</backgroundColor>
+        <height>0</height>
+        <horizontalAlignment>Left</horizontalAlignment>
+        <verticalAlignment>Top</verticalAlignment>
+    </header>
+    <middleLine>
+        <color>#000000</color>
+        <height>0</height>
+    </middleLine>
+    <name>MailTemplateLabel</name>
+    <topLine>
+        <color>#000000</color>
+        <height>0</height>
+    </topLine>
+</Letterhead>
