@@ -58,5 +58,25 @@
         <members>Event Coordinator</members>
         <name>Profile</name>
     </types>
+    <types>
+        <members>Enablement_sfdcSESv60/YaDWCxUfVQcczOnvmCLrSBaCMWYNCU</members>
+        <name>Dashboard</name>
+    </types>
+    <types>
+        <members>unfiled$public/Cancellation_notification</members>
+        <members>unfiled$public/Event_invitation</members>
+        <members>unfiled$public/Event_reminder</members>
+        <members>unfiled$public/Post_Event_Follow_Up</members>
+        <name>EmailTemplate</name>
+    </types>
+    <types>
+        <members>MailTemplate_Label</members>
+        <name>Letterhead</name>
+    </types>
+    <types>
+        <members>unfiled$public/Information_on_contacts_assisted_to_the_vUi</members>
+        <members>unfiled$public/Report_on_expected_campaign_attendance_Bt3</members>
+        <name>Report</name>
+    </types>
     <version>62.0</version>
 </Package>
