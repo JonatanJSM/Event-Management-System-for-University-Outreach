@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Prevent_Confirmation_Status_Change</fullName>
+    <active>true</active>
+    <description>Rule to prevent the change of the confirmation status</description>
+    <errorConditionFormula>OR(ISPICKVAL(PRIORVALUE( RVSP__c ), &quot;Accepted&quot;), ISPICKVAL(PRIORVALUE(RVSP__c ), &quot;Declined&quot;)) &amp;&amp; OR(NOT(ISPICKVAL(RVSP__c , &quot;Accepted&quot;)), NOT(ISPICKVAL(RVSP__c , &quot;Declined&quot;)))</errorConditionFormula>
+    <errorDisplayField>RVSP__c</errorDisplayField>
+    <errorMessage>Sorry. You can&apos;t change RVSP when it has been set to a definitive status.</errorMessage>
+</ValidationRule>

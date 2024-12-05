@@ -1,0 +1,12 @@
+{
+  "type" : "sfdc_cms__route",
+  "title" : "FormRegister",
+  "contentBody" : {
+    "activeViewId" : "FormRegister",
+    "configurationTags" : [ ],
+    "pageAccess" : "UseParent",
+    "routeType" : "custom-formregister",
+    "urlPrefix" : "formregister"
+  },
+  "urlName" : "formregister"
+}
