@@ -1,0 +1,14 @@
+<table border="0" cellpadding="5" width="600" cellspacing="5" height="400" >
+<tr valign="top" height="50" >
+<td tEditID="c1r1" style=" background-color:#FFFFFF; bEditID:r3st1; color:#000000; bLabel:main; font-size:12pt; font-family:arial;" aEditID="c1r1" locked="0" >
+<![CDATA[<font face="arial"><b>Dear {!Contact.FirstName}</b>,</font>]]></td>
+</tr>
+<tr valign="top" height="300" >
+<td tEditID="c1r2" style=" background-color:#FFFFFF; bEditID:r3st1; color:#000000; bLabel:main; font-size:12pt; font-family:arial;" aEditID="c1r2" locked="0" >
+<![CDATA[<font face="arial" style="color: rgb(0, 0, 0); font-family: arial; font-size: 12pt;">This is a friendly reminder that you are registered for the event {!Event.Who}. Here are the event details:</font><div style="color: rgb(0, 0, 0); font-family: arial; font-size: 12pt;"><font face="arial"><br></font></div><div style="color: rgb(0, 0, 0); font-family: arial; font-size: 12pt;"><font face="arial" style="color: rgb(0, 0, 0); font-family: arial; font-size: 12pt;"><span style="white-space:pre">	</span></font><font face="arial">- <b>Date</b>:&nbsp;{!Campaign.Event_Date__c}</font></div><div style="color: rgb(0, 0, 0); font-family: arial; font-size: 12pt;"><font face="arial"><span style="white-space:pre">	</span>- <b>End Date:</b>&nbsp;{!Campaign.EndDate}</font></div><div style="color: rgb(0, 0, 0); font-family: arial; font-size: 12pt;"><font face="arial"><br></font></div><div style=""><font face="arial" style="">We look forward to seeing you there.</font></div><div style=""><font face="arial" style=""><br></font></div><div style=""><font face="arial" style=""><div>Best regards,</div><div>{!Campaign.CreatedBy}</div></font></div>]]></td>
+</tr>
+<tr valign="top" height="50" >
+<td tEditID="c1r3" style=" background-color:#FFFFFF; bEditID:r3st1; color:#000000; bLabel:main; font-size:12pt; font-family:arial;" aEditID="c1r3" locked="0" >
+<![CDATA[<font face="arial">More information at:&nbsp;{!Campaign.URL__c}</font>]]></td>
+</tr>
+</table>

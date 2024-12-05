@@ -1,0 +1,21 @@
+<template>
+    <lightning-card title="Eventos Disponibles" class="event-card">
+        <template if:true={campaigns}>
+            <template for:each={campaigns} for:item="campaign">
+                <div key={campaign.Id} class="event-item">
+                    <h3 class="event-title">{campaign.Name}</h3>
+                    <p class="event-date">Fecha: {campaign.StartDate}</p>
+                    <lightning-button
+                        label="Registrarse"
+                        class="register-button"
+                        onclick={handleRegister}
+                        data-id={campaign.Id}>
+                    </lightning-button>
+                </div>
+            </template>
+        </template>
+        <template if:false={campaigns}>
+            <p class="no-events">No hay eventos disponibles en este momento.</p>
+        </template>
+    </lightning-card>
+</template>

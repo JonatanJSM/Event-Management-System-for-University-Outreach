@@ -1,0 +1,14 @@
+<table border="0" cellpadding="5" width="600" cellspacing="5" height="400" >
+<tr valign="top" height="50" >
+<td tEditID="c1r1" style=" background-color:#FFFFFF; bEditID:r3st1; color:#000000; bLabel:main; font-size:12pt; font-family:arial;" aEditID="c1r1" locked="0" >
+<![CDATA[<font face="arial"><b>Dear {!Contact.FirstName}</b>,</font>]]></td>
+</tr>
+<tr valign="top" height="300" >
+<td tEditID="c1r2" style=" background-color:#FFFFFF; bEditID:r3st1; color:#000000; bLabel:main; font-size:12pt; font-family:arial;" aEditID="c1r2" locked="0" >
+<![CDATA[<div style=""><font face="arial">We regret to inform you that your registration for the event {!Campaign.Name}&nbsp;has been canceled.</font></div><div style=""><font face="arial"><br></font></div><div style=""><font face="arial">We encourage you to explore other events that may be of interest to you.</font></div><div style=""><font face="arial"><br></font></div><div style=""><font face="arial">We hope to see you at one of our future events.</font></div><div style=""><font face="arial"><br></font></div><div style=""><br></div>]]></td>
+</tr>
+<tr valign="top" height="50" >
+<td tEditID="c1r3" style=" background-color:#FFFFFF; bEditID:r3st1; color:#000000; bLabel:main; font-size:12pt; font-family:arial;" aEditID="c1r3" locked="0" >
+<![CDATA[<div><font face="arial">Sincerely,</font></div><div><font face="arial">{!Campaign.CreatedBy}</font></div>]]></td>
+</tr>
+</table>

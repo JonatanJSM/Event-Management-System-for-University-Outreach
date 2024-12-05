@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Cancellation notification emal template</description>
+    <encodingKey>UTF-8</encodingKey>
+    <letterhead>MailTemplate_Label</letterhead>
+    <name>Cancellation notification</name>
+    <style>formalLetter</style>
+    <subject>Cancellation of Your Registration for {!Campaign.Name}</subject>
+    <type>html</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>
